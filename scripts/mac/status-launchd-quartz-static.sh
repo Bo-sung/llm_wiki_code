@@ -8,8 +8,13 @@ echo "=== launchd status: $LABEL ==="
 launchctl list "$LABEL" 2>/dev/null || echo "(not loaded)"
 
 echo ""
-echo "=== HTTP check: http://127.0.0.1:8081/ ==="
-curl -sI http://127.0.0.1:8081/ 2>/dev/null | head -3 || echo "(no response)"
+echo "  Internal URL: http://127.0.0.1:8080/"
+echo "  External URL: http://8eh1ndy0u.iptime.org:8081/"
+echo "  Port forward: external 8081 -> internal 8080"
+
+echo ""
+echo "=== HTTP check: http://127.0.0.1:8080/ ==="
+curl -sI http://127.0.0.1:8080/ 2>/dev/null | head -3 || echo "(no response)"
 
 echo ""
 echo "=== last 20 lines: quartz-static.out.log ==="

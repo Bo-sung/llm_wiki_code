@@ -15,9 +15,11 @@ public-vault/Markdown
     ↓ npx quartz build
 quartz-site/public/ (정적 HTML/CSS/JS)
     ↓ launchd com.llmwiki.quartz-static
-python3 -m http.server 8081 --bind 0.0.0.0
-    ↓
-브라우저 http://<mac-ip>:8081/
+python3 -m http.server 8080 --bind 0.0.0.0
+    ↓ (Mac mini 내부)
+http://127.0.0.1:8080/
+    ↓ (공유기 포트포워딩: 외부 8081 → 내부 8080)
+http://8eh1ndy0u.iptime.org:8081/
 ```
 
 | 항목 | 값 |
@@ -25,8 +27,9 @@ python3 -m http.server 8081 --bind 0.0.0.0
 | content source | `~/apps/llm-wiki/public-vault` |
 | quartz site | `~/apps/llm-wiki/quartz-site` |
 | 정적 출력 | `~/apps/llm-wiki/quartz-site/public` |
-| 서버 포트 | 8081 |
-| 서버 바인드 | 0.0.0.0 (LAN/Tailscale 접근 가능) |
+| 내부 서버 포트 | **8080** |
+| 외부 접속 포트 | **8081** (포트포워딩 경유) |
+| 서버 바인드 | 0.0.0.0 |
 | launchd label | `com.llmwiki.quartz-static` |
 
 ---
@@ -38,7 +41,7 @@ python3 -m http.server 8081 --bind 0.0.0.0
 | 터미널 세션 | 필요 | 불필요 (launchd 상시 실행) |
 | Mac mini 재시작 후 | 수동 재시작 필요 | 자동 재시작 |
 | 목적 | 개발/미리보기 | 운영 |
-| 포트 | 8080 | 8081 |
+| 내부 포트 | 8080 | 8080 |
 
 ---
 
@@ -64,7 +67,7 @@ bash scripts/mac/status-launchd-quartz-static.sh
 
 ```bash
 launchctl list com.llmwiki.quartz-static
-curl -I http://127.0.0.1:8081/
+curl -I http://127.0.0.1:8080/
 tail -20 ~/apps/llm-wiki/shared/logs/quartz-static.out.log
 ```
 
@@ -96,11 +99,13 @@ bash scripts/mac/build-quartz-experiment.sh
 
 | 접근 위치 | URL |
 |---|---|
-| Mac mini 내부 | `http://127.0.0.1:8081/` |
-| LAN | `http://<mac-lan-ip>:8081/` |
-| Tailscale | `http://<tailscale-ip>:8081/` |
-| 포트포워딩 | `http://<공인IP>:<외부포트>/` |
-| Windows (SSH 터널) | `ssh -L 8081:localhost:8081 boseong@<mac-ip>` 후 `http://localhost:8081/` |
+| Mac mini 내부 | `http://127.0.0.1:8080/` |
+| 외부 (포트포워딩) | `http://8eh1ndy0u.iptime.org:8081/` |
+| LAN 직접 | `http://<mac-lan-ip>:8080/` |
+| Tailscale | `http://<tailscale-ip>:8080/` |
+| Windows SSH 터널 | `ssh -L 8080:localhost:8080 boseong@<mac-ip>` 후 `http://localhost:8080/` |
+
+포트포워딩 구성: 공유기 외부 8081 → Mac mini 내부 8080
 
 ---
 

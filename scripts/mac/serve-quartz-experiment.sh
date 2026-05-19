@@ -21,7 +21,7 @@ QUARTZ_SITE_DIR="${QUARTZ_SITE_DIR:-$HOME/apps/llm-wiki/quartz-site}"
 
 case "$MODE" in
   static)
-    PORT="${2:-8081}"
+    PORT="${2:-8080}"
     HOST="${3:-localhost}"
     ;;
   dev)
