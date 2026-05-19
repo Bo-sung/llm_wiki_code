@@ -139,7 +139,8 @@ Obsidian + public-vault pull 방식을 먼저 검증하고, 추가 앱 개발 �
 ### Quartz 웹 뷰어 운영 (2026-05-20)
 
 - 별도 MAUI Reader 제작 전까지 Quartz를 운영용 웹 뷰어로 사용한다.
-- Quartz는 dev server(`--serve`)가 아니라 **정적 build + launchd static server** 방식으로 운영한다.
+- Quartz는 dev server(`--serve`)가 아니라 **정적 build + Caddy static server (launchd)** 방식으로 운영한다.
+- Python `http.server`는 Quartz extensionless pretty URL을 처리하지 못해 Not Found 발생 — Caddy로 대체.
 - 내부 포트 8080, 외부 접속 8081(공유기 포트포워딩: 외부 8081 → 내부 8080).
 - Quartz content는 `public-vault`만 사용한다. 운영용 `shared/data`는 웹으로 직접 노출하지 않는다.
 - Quartz 설정은 `quartz-site/`에 분리한다. `public-vault`는 순수 Markdown vault로 유지한다.

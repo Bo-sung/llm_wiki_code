@@ -1,0 +1,5 @@
+:8080 {
+    root * /Users/boseong/apps/llm-wiki/quartz-site/public
+    file_server
+    try_files {path} {path}.html {path}/index.html
+}

@@ -7,14 +7,12 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/bin/python3</string>
-        <string>-m</string>
-        <string>http.server</string>
-        <string>8080</string>
-        <string>--bind</string>
-        <string>0.0.0.0</string>
-        <string>--directory</string>
-        <string>/Users/boseong/apps/llm-wiki/quartz-site/public</string>
+        <string>__CADDY_PATH__</string>
+        <string>run</string>
+        <string>--config</string>
+        <string>/Users/boseong/apps/llm-wiki/quartz-site/Caddyfile</string>
+        <string>--adapter</string>
+        <string>caddyfile</string>
     </array>
 
     <key>WorkingDirectory</key>

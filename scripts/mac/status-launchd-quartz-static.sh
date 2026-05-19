@@ -13,8 +13,24 @@ echo "  External URL: http://8eh1ndy0u.iptime.org:8081/"
 echo "  Port forward: external 8081 -> internal 8080"
 
 echo ""
-echo "=== HTTP check: http://127.0.0.1:8080/ ==="
-curl -sI http://127.0.0.1:8080/ 2>/dev/null | head -3 || echo "(no response)"
+echo "=== HTTP checks ==="
+echo "--- GET / ---"
+curl -sI http://127.0.0.1:8080/ 2>/dev/null | head -1 || echo "(no response)"
+
+echo "--- GET /Notes/ ---"
+curl -sI http://127.0.0.1:8080/Notes/ 2>/dev/null | head -1 || echo "(no response)"
+
+# Check first note found in public/Notes/References/
+NOTE_PATH=$(find "$HOME/apps/llm-wiki/quartz-site/public/Notes/References" \
+    -maxdepth 1 -name "*.html" 2>/dev/null | head -1 | \
+    sed "s|$HOME/apps/llm-wiki/quartz-site/public||" | sed 's|\.html$||')
+
+if [ -n "$NOTE_PATH" ]; then
+    echo "--- GET $NOTE_PATH (extensionless) ---"
+    curl -sI "http://127.0.0.1:8080${NOTE_PATH}" 2>/dev/null | head -1 || echo "(no response)"
+else
+    echo "--- GET extensionless note: no notes found in public/Notes/References/ ---"
+fi
 
 echo ""
 echo "=== last 20 lines: quartz-static.out.log ==="

@@ -13,10 +13,10 @@ MAUI Reader 제작 전까지 Quartz를 운영용 웹 뷰어로 사용한다.
 ```
 public-vault/Markdown
     ↓ npx quartz build
-quartz-site/public/ (정적 HTML/CSS/JS)
+quartz-site/public/ (정적 HTML + extensionless URLs)
     ↓ launchd com.llmwiki.quartz-static
-python3 -m http.server 8080 --bind 0.0.0.0
-    ↓ (Mac mini 내부)
+Caddy (try_files: {path} → {path}.html → {path}/index.html)
+    ↓ port 8080, bind 0.0.0.0
 http://127.0.0.1:8080/
     ↓ (공유기 포트포워딩: 외부 8081 → 내부 8080)
 http://8eh1ndy0u.iptime.org:8081/
@@ -27,10 +27,20 @@ http://8eh1ndy0u.iptime.org:8081/
 | content source | `~/apps/llm-wiki/public-vault` |
 | quartz site | `~/apps/llm-wiki/quartz-site` |
 | 정적 출력 | `~/apps/llm-wiki/quartz-site/public` |
+| 정적 서버 | **Caddy** |
 | 내부 서버 포트 | **8080** |
 | 외부 접속 포트 | **8081** (포트포워딩 경유) |
 | 서버 바인드 | 0.0.0.0 |
 | launchd label | `com.llmwiki.quartz-static` |
+| Caddyfile | `~/apps/llm-wiki/quartz-site/Caddyfile` |
+
+---
+
+## 왜 Python http.server가 아닌 Caddy인가
+
+Quartz는 `/Notes/References/note` 형태의 extensionless pretty URL을 생성한다.
+Python `http.server`는 이를 `note.html`로 fallback하지 못해 Not Found가 발생한다.
+Caddy의 `try_files {path} {path}.html {path}/index.html`이 이를 처리한다.
 
 ---
 
@@ -41,6 +51,7 @@ http://8eh1ndy0u.iptime.org:8081/
 | 터미널 세션 | 필요 | 불필요 (launchd 상시 실행) |
 | Mac mini 재시작 후 | 수동 재시작 필요 | 자동 재시작 |
 | 목적 | 개발/미리보기 | 운영 |
+| 서버 | npx quartz | Caddy |
 | 내부 포트 | 8080 | 8080 |
 
 ---
@@ -48,12 +59,20 @@ http://8eh1ndy0u.iptime.org:8081/
 ## 최초 설치
 
 ```bash
+# 0. Caddy 설치 (미설치 시)
+brew install caddy
+
 # 1. Quartz 빌드
 bash scripts/mac/build-quartz-experiment.sh
 
-# 2. launchd 등록
+# 2. launchd 등록 (Caddyfile 자동 배포 포함)
 bash scripts/mac/install-launchd-quartz-static.sh
 ```
+
+`install-launchd-quartz-static.sh`가 수행하는 작업:
+- `Caddyfile.quartz-static` → `~/apps/llm-wiki/quartz-site/Caddyfile` 복사
+- plist의 `__CADDY_PATH__`를 실제 caddy 경로로 치환
+- launchd bootstrap
 
 ---
 
