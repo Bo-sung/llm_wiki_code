@@ -28,85 +28,75 @@ Quartz는 웹 전용 viewer다.
 
 ---
 
-## 후보 구조
-
-### 후보 A: public-vault 내부에 Quartz 설정
-
-```
-public-vault/
-  Notes/
-  Index/
-  quartz.config.ts
-  package.json
-```
-
-장점:
-- GitHub Pages 연결 단순
-- 하나의 repo로 관리
-
-단점:
-- Markdown vault에 Node/TS 설정 파일이 섞임
-- MAUI Reader는 이 파일들을 무시해야 함
-
-### 후보 B: 별도 quartz-site (권장)
+## 채택한 구조 (후보 B, 검증 완료)
 
 ```
 /Users/boseong/apps/llm-wiki/
-  public-vault/          ← Markdown 원본
-  quartz-site/           ← Quartz 설정만
+  public-vault/              ← 순수 Markdown vault (git repo)
+    index.md                 ← Quartz 홈페이지 (필수)
+    Notes/
+    README.md
+  quartz-site/               ← Quartz 설정만 (vault와 분리)
     quartz.config.ts
     package.json
-    content -> ../public-vault  (symlink 또는 contentDir 설정)
+    content -> ../public-vault   ← symlink
+    public/                  ← build output (gitignored)
 ```
 
-장점:
-- public-vault는 순수 Markdown vault로 유지
-- MAUI Reader가 읽을 vault가 깔끔함
-- Quartz 설정 변경이 vault에 영향 없음
+### 채택 이유
 
-단점:
-- 별도 디렉터리 관리
-- 배포 파이프라인이 약간 복잡
+- public-vault는 순수 Markdown으로 유지됨
+- MAUI Reader가 읽을 vault에 Node/TS 설정 파일이 없음
+- Quartz 설정 변경이 vault에 영향 없음
+- content symlink로 연결 — 파일 복사 불필요
+
+### 주의
+
+- `content/index.md` 필수 — 없으면 `/` 404
+- `content` symlink 필수 — 없으면 `Found 0 input files`
+- `quartz-site/` 는 public-vault repo에 포함하지 않음
 
 ---
 
-## 권장 구조
+## 검증 결과 (2026-05-20, Quartz v4.5.2)
 
-**후보 B 우선 검토**
-
-public-vault를 Quartz의 `contentDir`로 지정한다.
-Quartz 자체 파일은 `quartz-site/`에 격리한다.
-
-```bash
-# quartz.config.ts 설정 예시
-contentDir: "/Users/boseong/apps/llm-wiki/public-vault"
+```text
+Found 4 input files from `content`
+Parsed 4 Markdown files
+Emitted 33 files to `public`
+[200] /
+[200] /Notes/
+[200] /Notes/References/2026-05-19-gemini-25-flash
+[200] /Notes/References/2026-05-19-launchd-watch-test
+[200] /README
 ```
 
 ---
 
 ## 테스트할 기능
 
-| 기능 | 확인 항목 |
-|---|---|
-| Markdown 렌더링 | 헤더, 표, 코드블록, bold/italic |
-| Wikilink | `[[Note Title]]` 링크 동작 |
-| Backlink | 노트 하단 backlink 목록 |
-| Search | full-text 검색 |
-| Graph | link graph view |
-| Mermaid | flowchart 렌더링 |
-| Mobile browser | 모바일에서 가독성 |
-| Tag | 태그 필터 |
+| 기능 | 확인 항목 | 상태 |
+|---|---|---|
+| Markdown 렌더링 | 헤더, 표, 코드블록, bold/italic | 확인 완료 |
+| 노트 목록 | `/Notes/` 접근 가능 | 확인 완료 |
+| Wikilink | `[[Note Title]]` 링크 동작 | 미확인 |
+| Backlink | 노트 하단 backlink 목록 | 미확인 |
+| Search | full-text 검색 | 미확인 |
+| Graph | link graph view | 미확인 |
+| Mermaid | flowchart 렌더링 | 미확인 |
+| Mobile browser | 모바일에서 가독성 | 미확인 |
+| Tag | 태그 필터 | 미확인 |
 
 ---
 
 ## 성공 기준
 
 ```text
-quartz build가 에러 없이 완료
-로컬 서버에서 Notes/ 노트 접근 가능
-Mermaid 코드블록이 다이어그램으로 렌더링됨
-Wikilink가 동작하거나 broken link 표시
-모바일 브라우저에서 기본 가독성 확보
+quartz build가 에러 없이 완료 ✓
+로컬 서버에서 Notes/ 노트 접근 가능 ✓
+Mermaid 코드블록이 다이어그램으로 렌더링됨 (미확인)
+Wikilink가 동작하거나 broken link 표시 (미확인)
+모바일 브라우저에서 기본 가독성 확보 (미확인)
 ```
 
 ## 실패 기준
@@ -114,6 +104,5 @@ Wikilink가 동작하거나 broken link 표시
 ```text
 Quartz가 public-vault 파일을 인식하지 못함
 Mermaid가 전혀 렌더링되지 않음
-wikilink가 전부 broken link
 빌드 시간이 비현실적으로 길다 (>5분 for 100 notes)
 ```

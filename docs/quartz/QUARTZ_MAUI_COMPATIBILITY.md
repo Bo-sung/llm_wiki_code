@@ -65,6 +65,26 @@ vault의 `.md` 파일은 두 클라이언트 중 어느 것이 읽어도 동일�
 
 ---
 
+---
+
+## 검증된 구조 (2026-05-20)
+
+```
+public-vault/          ← MAUI Reader가 읽을 vault (순수 Markdown)
+  index.md
+  Notes/
+quartz-site/           ← Quartz 전용 (MAUI와 무관)
+  content -> ../public-vault   ← symlink
+  quartz.config.ts
+```
+
+이 구조에서:
+- MAUI Reader는 `public-vault/`만 읽으면 된다
+- Quartz는 `quartz-site/content` symlink 경유로 같은 파일을 읽는다
+- 두 클라이언트 모두 동일한 `.md` 원본을 사용한다
+
+---
+
 ## 결론
 
 vault를 content contract 기준으로 유지하면 Quartz와 MAUI Reader는 동일한 파일을 각자의 방식으로 렌더링할 수 있다. 어느 한 쪽에 vault를 lock-in하지 않는다.
