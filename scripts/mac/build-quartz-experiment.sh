@@ -4,7 +4,7 @@ set -euo pipefail
 QUARTZ_SITE_DIR="${QUARTZ_SITE_DIR:-$HOME/apps/llm-wiki/quartz-site}"
 PUBLIC_VAULT_DIR="${PUBLIC_VAULT_DIR:-$HOME/apps/llm-wiki/public-vault}"
 
-echo "=== LLM Wiki: Quartz Experiment Build ==="
+echo "=== LLM Wiki: Quartz Build ==="
 echo "  quartz-site: $QUARTZ_SITE_DIR"
 echo ""
 
@@ -51,7 +51,12 @@ npx quartz build
 OUTPUT_DIR="$QUARTZ_SITE_DIR/public"
 if [ -d "$OUTPUT_DIR" ]; then
     FILE_COUNT=$(find "$OUTPUT_DIR" -type f | wc -l | tr -d ' ')
-    echo "[OK] Build complete: $FILE_COUNT files in $OUTPUT_DIR"
+    echo "[OK] Quartz build complete"
+    echo "[OK] Output: $OUTPUT_DIR ($FILE_COUNT files)"
+    echo ""
+    echo "  To install static server: bash scripts/mac/install-launchd-quartz-static.sh"
+    echo "  To quick-serve locally:   bash scripts/mac/serve-quartz-experiment.sh static"
 else
-    echo "[WARN] Output directory not found at $OUTPUT_DIR — check quartz build output."
+    echo "[ERROR] Output directory not found at $OUTPUT_DIR — check quartz build output."
+    exit 1
 fi

@@ -129,6 +129,27 @@ Obsidian + public-vault pull 방식을 먼저 검증하고, 추가 앱 개발 �
 
 ---
 
+### Capture API + Browser Extension (2026-05-20)
+
+- Capture API(ASP.NET Core Minimal API)를 1차 수집 UX로 채택한다.
+- Firefox Extension이 주 브라우저 대상이다.
+- CORS는 MVP에서 항상 AllowAny로 활성화한다 (Bearer Token 인증은 유지).
+- 환경변수 `CAPTURE_API_CORS_MODE`는 문서화용으로 남기며, 미설정 시에도 CORS가 비활성화되지 않는다.
+
+### Quartz 웹 뷰어 운영 (2026-05-20)
+
+- 별도 MAUI Reader 제작 전까지 Quartz를 운영용 웹 뷰어로 사용한다.
+- Quartz는 dev server(`--serve`)가 아니라 **정적 build + launchd static server** 방식으로 운영한다.
+- Quartz content는 `public-vault`만 사용한다. 운영용 `shared/data`는 웹으로 직접 노출하지 않는다.
+- Quartz 설정은 `quartz-site/`에 분리한다. `public-vault`는 순수 Markdown vault로 유지한다.
+- `quartz-site/content`는 `public-vault` symlink로 연결한다.
+- 새 노트 반영은 초기에는 수동 `quartz build`로 처리한다. 자동 rebuild는 후속 작업.
+- Quartz는 최종 종속 대상이 아니다. MAUI Reader와의 호환은 Markdown content contract로 보장한다.
+
+참조: [`docs/quartz/QUARTZ_STATIC_HOSTING.md`](quartz/QUARTZ_STATIC_HOSTING.md)
+
+---
+
 ## 미결정 사항
 
 | 항목 | 현재 상태 |

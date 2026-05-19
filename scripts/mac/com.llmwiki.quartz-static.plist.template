@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.llmwiki.quartz-static</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>-m</string>
+        <string>http.server</string>
+        <string>8081</string>
+        <string>--bind</string>
+        <string>0.0.0.0</string>
+        <string>--directory</string>
+        <string>/Users/boseong/apps/llm-wiki/quartz-site/public</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/boseong/apps/llm-wiki/quartz-site</string>
+
+    <key>StandardOutPath</key>
+    <string>/Users/boseong/apps/llm-wiki/shared/logs/quartz-static.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/boseong/apps/llm-wiki/shared/logs/quartz-static.err.log</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+</dict>
+</plist>
