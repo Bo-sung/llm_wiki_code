@@ -1,0 +1,53 @@
+# Environment — never commit
+.env
+*.env
+shared/
+
+# C# / .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.nupkg
+TestResults/
+
+# Build artifacts
+artifacts/
+publish/
+releases/
+
+# Extension packages (build output)
+extensions/**/*.zip
+extensions/**/*.xpi
+
+# Vault data — never commit
+data/
+
+# Logs
+*.log
+
+# IDE / Tool-specific
+.vscode/
+.idea/
+*.iml
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python (legacy)
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.egg
+
+# Test/Coverage
+.pytest_cache/
+.coverage
+htmlcov/

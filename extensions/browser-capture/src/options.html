@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>LLM Wiki Capture — Options</title>
+  <style>
+    body { font-family: sans-serif; max-width: 400px; padding: 20px; }
+    h2 { font-size: 16px; margin-bottom: 16px; }
+    label { display: block; font-size: 13px; margin-bottom: 4px; }
+    input[type="url"], input[type="password"] {
+      width: 100%; box-sizing: border-box; padding: 6px; font-size: 13px; margin-bottom: 12px;
+    }
+    button { padding: 8px 16px; font-size: 13px; cursor: pointer; }
+    #status { margin-top: 10px; font-size: 12px; }
+    #status.ok { color: green; }
+    #status.err { color: red; }
+  </style>
+</head>
+<body>
+  <h2>LLM Wiki Capture — 설정</h2>
+  <label for="capture-url">Capture API URL</label>
+  <input type="url" id="capture-url" placeholder="http://127.0.0.1:5055" />
+
+  <label for="capture-token">Capture API Token</label>
+  <input type="password" id="capture-token" placeholder="토큰 입력" autocomplete="off" />
+
+  <button id="btn-save">저장</button>
+  <div id="status"></div>
+  <script src="options.js"></script>
+</body>
+</html>

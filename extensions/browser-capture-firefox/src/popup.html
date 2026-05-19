@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>LLM Wiki Capture</title>
+  <style>
+    body { font-family: sans-serif; width: 220px; padding: 12px; margin: 0; }
+    h3 { margin: 0 0 10px; font-size: 14px; }
+    button { display: block; width: 100%; margin-bottom: 8px; padding: 8px; cursor: pointer; font-size: 13px; }
+    #status { font-size: 11px; color: #555; margin-top: 6px; min-height: 16px; }
+    #status.ok { color: green; }
+    #status.err { color: red; }
+    a { font-size: 11px; }
+    textarea { width: 100%; box-sizing: border-box; height: 60px; font-size: 12px; margin-bottom: 6px; resize: vertical; }
+  </style>
+</head>
+<body>
+  <h3>LLM Wiki Capture</h3>
+  <button id="btn-link">Save Page</button>
+  <button id="btn-clip">Save Selection</button>
+  <hr />
+  <textarea id="note-text" placeholder="메모 내용"></textarea>
+  <button id="btn-note">Save Note</button>
+  <div id="status"></div>
+  <br />
+  <a id="options-link" href="#">Options</a>
+  <script src="../shared/browserCompat.js"></script>
+  <script src="../shared/captureClient.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

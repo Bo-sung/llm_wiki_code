@@ -1,0 +1,1 @@
+.\scripts\deploy\deploy-to-mac.ps1 -RemoteHost "8eh1ndy0u.iptime.org" -User "boseong" -Port 2222 -Runtime "osx-arm64" -RemoteBase "/Users/boseong/apps/llm-wiki"

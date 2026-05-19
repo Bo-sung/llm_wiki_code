@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LlmWiki.CaptureApi/LlmWiki.CaptureApi.csproj" />
+    <Project Path="src/LlmWiki.Cli/LlmWiki.Cli.csproj" />
+    <Project Path="src/LlmWiki.Core/LlmWiki.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LlmWiki.Tests/LlmWiki.Tests.csproj" />
+  </Folder>
+</Solution>

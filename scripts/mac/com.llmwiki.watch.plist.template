@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+    <key>Label</key>
+    <string>com.llmwiki.watch</string>
+
+    <!-- Absolute path to dotnet + DLL + subcommand -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/boseong/.dotnet/dotnet</string>
+        <string>LlmWiki.Cli.dll</string>
+        <string>watch</string>
+    </array>
+
+    <!-- DLL must exist in this directory -->
+    <key>WorkingDirectory</key>
+    <string>/Users/boseong/apps/llm-wiki/current</string>
+
+    <!-- launchd does not load shell profiles; PATH and app env vars must be explicit -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>LLM_WIKI_ENV_FILE</key>
+        <string>/Users/boseong/apps/llm-wiki/shared/.env</string>
+        <key>LLM_WIKI_ROOT</key>
+        <string>/Users/boseong/apps/llm-wiki/shared/data</string>
+        <key>DOTNET_ROOT</key>
+        <string>/Users/boseong/.dotnet</string>
+        <key>PATH</key>
+        <string>/Users/boseong/.dotnet:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/boseong/apps/llm-wiki/shared/logs/watch.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/boseong/apps/llm-wiki/shared/logs/watch.err.log</string>
+
+    <!-- Restart automatically if the process exits -->
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Start immediately when loaded -->
+    <key>RunAtLoad</key>
+    <true/>
+
+</dict>
+</plist>

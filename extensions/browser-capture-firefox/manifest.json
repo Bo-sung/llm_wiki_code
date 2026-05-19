@@ -1,0 +1,48 @@
+{
+  "manifest_version": 2,
+  "name": "LLM Wiki Capture",
+  "version": "0.1.0",
+  "description": "Capture pages, clips, and notes to LLM Wiki",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "llm-wiki-capture@local",
+      "strict_min_version": "91.0"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage",
+    "tabs",
+    "http://127.0.0.1:5055/*",
+    "http://localhost:5055/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "shared/browserCompat.js",
+      "shared/captureClient.js",
+      "src/background.js"
+    ]
+  },
+  "browser_action": {
+    "default_popup": "src/popup.html",
+    "default_title": "LLM Wiki Capture"
+  },
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
