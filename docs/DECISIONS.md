@@ -142,9 +142,11 @@ Obsidian + public-vault pull 방식을 먼저 검증하고, 추가 앱 개발 �
 - Quartz는 dev server(`--serve`)가 아니라 **정적 build + Caddy static server (launchd)** 방식으로 운영한다.
 - Python `http.server`는 Quartz extensionless pretty URL을 처리하지 못해 Not Found 발생 — Caddy로 대체.
 - 내부 포트 8080, 외부 접속 8081(공유기 포트포워딩: 외부 8081 → 내부 8080).
-- Quartz content는 `public-vault`만 사용한다. 운영용 `shared/data`는 웹으로 직접 노출하지 않는다.
-- Quartz 설정은 `quartz-site/`에 분리한다. `public-vault`는 순수 Markdown vault로 유지한다.
-- `quartz-site/content`는 `public-vault` symlink로 연결한다.
+- Quartz는 public-vault viewer가 아니라 **운영용 private viewer**로 사용한다. 현재 단계에서는 인증 없이 외부 접속 허용.
+- content source는 `shared/data` 전체가 아닌 `quartz-private-content` (Notes/Index symlink만 포함)로 필터링한다.
+- `Inbox`, `Sources`, `System`, `.env`는 절대 Quartz content에 포함하지 않는다.
+- `public-vault`는 GitHub 공개용으로 유지한다. Quartz Private Viewer content로 사용하지 않는다.
+- 접근 제어는 후속 작업: Caddy basic_auth → Tailscale → HTTPS → Cloudflare Access.
 - 새 노트 반영은 초기에는 수동 `quartz build`로 처리한다. 자동 rebuild는 후속 작업.
 - Quartz는 최종 종속 대상이 아니다. MAUI Reader와의 호환은 Markdown content contract로 보장한다.
 

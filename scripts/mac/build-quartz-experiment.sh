@@ -2,10 +2,11 @@
 set -euo pipefail
 
 QUARTZ_SITE_DIR="${QUARTZ_SITE_DIR:-$HOME/apps/llm-wiki/quartz-site}"
-PUBLIC_VAULT_DIR="${PUBLIC_VAULT_DIR:-$HOME/apps/llm-wiki/public-vault}"
+PRIVATE_CONTENT_DIR="${PRIVATE_CONTENT_DIR:-$HOME/apps/llm-wiki/quartz-private-content}"
 
 echo "=== LLM Wiki: Quartz Build ==="
-echo "  quartz-site: $QUARTZ_SITE_DIR"
+echo "  quartz-site    : $QUARTZ_SITE_DIR"
+echo "  private-content: $PRIVATE_CONTENT_DIR"
 echo ""
 
 # ─── Prerequisites ───────────────────────────────────────────────────────────
@@ -28,24 +29,30 @@ if [ ! -L "$CONTENT_LINK" ]; then
     echo "  Run setup-quartz-experiment.sh to create the content symlink."
     exit 1
 fi
-echo "[OK] content symlink: $(readlink "$CONTENT_LINK")"
+
+CONTENT_TARGET=$(readlink "$CONTENT_LINK")
+echo "[OK] content -> $CONTENT_TARGET"
 
 if [ ! -f "$CONTENT_LINK/index.md" ]; then
     echo "[ERROR] content/index.md not found."
-    echo "  Run setup-quartz-experiment.sh to create index.md."
+    echo "  Run setup-quartz-experiment.sh."
     exit 1
 fi
 echo "[OK] content/index.md exists"
 
+if [ ! -L "$PRIVATE_CONTENT_DIR/Notes" ]; then
+    echo "[WARN] $PRIVATE_CONTENT_DIR/Notes is not a symlink — Notes may not appear."
+fi
+
 if [ ! -d "$CONTENT_LINK/Notes" ]; then
-    echo "[WARN] content/Notes/ not found — vault may be empty or Notes not yet generated."
+    echo "[WARN] content/Notes not found — no notes will be rendered."
 fi
 
 # ─── Build ──────────────────────────────────────────────────────────────────
 cd "$QUARTZ_SITE_DIR"
 
 echo ""
-echo "[INFO] Building Quartz..."
+echo "[INFO] Building Quartz (content: $CONTENT_TARGET)..."
 npx quartz build
 
 OUTPUT_DIR="$QUARTZ_SITE_DIR/public"
@@ -54,9 +61,9 @@ if [ -d "$OUTPUT_DIR" ]; then
     echo "[OK] Quartz build complete"
     echo "[OK] Output: $OUTPUT_DIR ($FILE_COUNT files)"
     echo ""
-    echo "  To install static server: bash scripts/mac/install-launchd-quartz-static.sh"
-    echo "  To quick-serve locally:   bash scripts/mac/serve-quartz-experiment.sh static"
+    echo "  Install static server: bash scripts/mac/install-launchd-quartz-static.sh"
+    echo "  Quick serve locally:   bash scripts/mac/serve-quartz-experiment.sh static"
 else
-    echo "[ERROR] Output directory not found at $OUTPUT_DIR — check quartz build output."
+    echo "[ERROR] Output directory not found at $OUTPUT_DIR"
     exit 1
 fi

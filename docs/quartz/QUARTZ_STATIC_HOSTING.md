@@ -24,7 +24,7 @@ http://8eh1ndy0u.iptime.org:8081/
 
 | 항목 | 값 |
 |---|---|
-| content source | `~/apps/llm-wiki/public-vault` |
+| content source | `~/apps/llm-wiki/quartz-private-content` (Notes/Index symlinks) |
 | quartz site | `~/apps/llm-wiki/quartz-site` |
 | 정적 출력 | `~/apps/llm-wiki/quartz-site/public` |
 | 정적 서버 | **Caddy** |
